@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Game from "./components/Game.vue";
+import GameCopilotX from "./components/Game-copilot-x.vue";
 </script>
 
 <template>
@@ -11,7 +11,7 @@ import Game from "./components/Game.vue";
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div> -->
-  <Game />
+  <GameCopilotX />
 </template>
 
 <style scoped>
