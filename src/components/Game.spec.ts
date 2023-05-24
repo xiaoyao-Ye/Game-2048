@@ -58,7 +58,7 @@ describe("test move", () => {
     expect(board.value[2][0].value).toBe(4);
   });
 
-  it.skip("should move tiles down", () => {
+  it("should move tiles down", () => {
     board.value[1][0] = createTile(2);
     board.value[2][1] = createTile(2);
 
@@ -70,7 +70,7 @@ describe("test move", () => {
     expect(board.value[3][1].value).toBe(2);
   });
 
-  it.skip("should move tiles left", () => {
+  it("should move tiles left", () => {
     board.value[0][2] = createTile(2);
     board.value[3][3] = createTile(2);
 
@@ -82,7 +82,7 @@ describe("test move", () => {
     expect(board.value[3][0].value).toBe(2);
   });
 
-  it.skip("should move tiles right", () => {
+  it("should move tiles right", () => {
     board.value[0][2] = createTile(2);
     board.value[1][1] = createTile(2);
 
@@ -90,8 +90,22 @@ describe("test move", () => {
 
     expect(board.value[0][2].value).toBe(0);
     expect(board.value[1][1].value).toBe(0);
-    expect(board.value[3][2].value).toBe(2);
-    expect(board.value[3][3].value).toBe(2);
+    expect(board.value[0][3].value).toBe(2);
+    expect(board.value[1][3].value).toBe(2);
+  });
+
+  it("should move tiles left", () => {
+    board.value[3][0] = createTile(2);
+    board.value[3][1] = createTile(2);
+    board.value[3][2] = createTile(2);
+    board.value[3][3] = createTile(2);
+
+    move("left");
+
+    expect(board.value[3][0].value).toBe(4);
+    expect(board.value[3][1].value).toBe(4);
+    expect(board.value[3][2].value).toBe(0);
+    expect(board.value[3][3].value).toBe(0);
   });
 });
 

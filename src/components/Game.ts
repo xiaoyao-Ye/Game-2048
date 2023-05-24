@@ -59,105 +59,114 @@ const addTile = (cell: Tile) => {
 type Direction = "up" | "down" | "left" | "right";
 
 const move = (direction: Direction) => {
-  const transpose = (matrix: Tile[][]) => {
-    for (let i = 0; i < matrix.length; i++) {
-      for (let j = i; j < matrix[0].length; j++) {
-        [matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]];
-      }
-    }
-  };
-
-  const reverseRows = (matrix: Tile[][]) => {
-    for (let i = 0; i < matrix.length; i++) {
-      matrix[i].reverse();
-    }
-  };
-
-  const moveLeft = (matrix: Tile[][]) => {
-    let moved = false;
-    for (let i = 0; i < matrix.length; i++) {
-      let k = 0;
-      for (let j = 1; j < matrix[0].length; j++) {
-        board.value[i][j].merged = false;
-        if (matrix[i][j].value !== 0) {
-          console.log(`当前位置${i}行${j}列`);
-          console.log(`目标位置${i}行${k}列`);
-          console.log("当前值", matrix[i][j].value);
-          console.log("目标值", matrix[i][k].value);
-
-          if (matrix[i][k].value === 0) {
-            matrix[i][k].value = matrix[i][j].value;
-            matrix[i][j].value = 0;
-            moved = true;
-          } else if (matrix[i][k].value === matrix[i][j].value && !matrix[i][k].merged && !matrix[i][j].merged) {
-            matrix[i][k].value *= 2;
-            matrix[i][j].value = 0;
-            matrix[i][k].merged = true;
-            moved = true;
-          } else {
-            k++;
-            if (k !== j) {
-              matrix[i][k].value = matrix[i][j].value;
-              matrix[i][j].value = 0;
-              moved = true;
-            }
-          }
-        }
-      }
-    }
-    if (moved) {
-      addTile(createTile());
-    }
-  };
-
-  const moveRight = (matrix: Tile[][]) => {
-    reverseRows(matrix);
-    moveLeft(matrix);
-    reverseRows(matrix);
-  };
-
-  const moveUp = (matrix: Tile[][]) => {
-    transpose(matrix);
-    moveLeft(matrix);
-    transpose(matrix);
-  };
-
-  const moveDown = (matrix: Tile[][]) => {
-    transpose(matrix);
-    moveRight(matrix);
-    transpose(matrix);
-  };
+  let moved = false;
 
   switch (direction) {
     case "up":
-      moveUp(board.value);
+      for (let j = 0; j < 4; j++) {
+        for (let i = 1; i < 4; i++) {
+          if (board.value[i][j].value === 0) continue;
+          // 如果当前格子不为空
+          let k = i;
+          // 向上移动格子，直到遇到边界或非空格子
+          while (k > 0 && board.value[k - 1][j].value === 0) {
+            board.value[k - 1][j].value = board.value[k][j].value;
+            board.value[k][j].value = 0;
+            moved = true;
+            k--;
+          }
+          // 如果上方格子与当前格子的值相等，则合并它们
+          if (k > 0 && board.value[k - 1][j].value === board.value[k][j].value) {
+            board.value[k - 1][j].value *= 2;
+            board.value[k][j].value = 0;
+            moved = true;
+          }
+        }
+      }
       break;
     case "down":
-      moveDown(board.value);
+      for (let j = 0; j < 4; j++) {
+        for (let i = 2; i >= 0; i--) {
+          if (board.value[i][j].value === 0) continue;
+          let k = i;
+          while (k < 3 && board.value[k + 1][j].value === 0) {
+            board.value[k + 1][j].value = board.value[k][j].value;
+            board.value[k][j].value = 0;
+            moved = true;
+            k++;
+          }
+          if (k < 3 && board.value[k + 1][j].value === board.value[k][j].value) {
+            board.value[k + 1][j].value *= 2;
+            board.value[k][j].value = 0;
+            moved = true;
+          }
+        }
+      }
       break;
     case "left":
-      moveLeft(board.value);
+      for (let i = 0; i < 4; i++) {
+        for (let j = 1; j < 4; j++) {
+          if (board.value[i][j].value === 0) continue;
+          let k = j;
+          // 目标为0
+          while (k > 0 && board.value[i][k - 1].value === 0) {
+            board.value[i][k - 1].value = board.value[i][k].value;
+            board.value[i][k].value = 0;
+            moved = true;
+            k--;
+          }
+          // 目标可合并
+          if (k > 0 && board.value[i][k - 1].value === board.value[i][k].value) {
+            board.value[i][k - 1].value *= 2;
+            board.value[i][k].value = 0;
+            moved = true;
+          }
+        }
+      }
       break;
     case "right":
-      moveRight(board.value);
+      for (let i = 0; i < 4; i++) {
+        for (let j = 2; j >= 0; j--) {
+          if (board.value[i][j].value === 0) continue;
+          let k = j;
+          while (k < 3 && board.value[i][k + 1].value === 0) {
+            board.value[i][k + 1].value = board.value[i][k].value;
+            board.value[i][k].value = 0;
+            moved = true;
+            k++;
+          }
+          if (k < 3 && board.value[i][k + 1].value === board.value[i][k].value) {
+            board.value[i][k + 1].value *= 2;
+            board.value[i][k].value = 0;
+            moved = true;
+          }
+        }
+      }
       break;
   }
+
+  return moved;
 };
 
 const keydownHandle = (event: KeyboardEvent) => {
+  let moved = false;
   switch (event.key) {
     case "ArrowUp":
-      move("up");
+      moved = move("up");
       break;
     case "ArrowDown":
-      move("down");
+      moved = move("down");
       break;
     case "ArrowLeft":
-      move("left");
+      moved = move("left");
       break;
     case "ArrowRight":
-      move("right");
+      moved = move("right");
       break;
+  }
+  // 如果进行过有效操作随机创建一个新的块
+  if (moved) {
+    addTile(createTile());
   }
 };
 
