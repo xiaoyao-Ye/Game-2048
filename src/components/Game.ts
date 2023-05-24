@@ -78,7 +78,13 @@ const move = (direction: Direction) => {
     for (let i = 0; i < matrix.length; i++) {
       let k = 0;
       for (let j = 1; j < matrix[0].length; j++) {
+        board.value[i][j].merged = false;
         if (matrix[i][j].value !== 0) {
+          console.log(`当前位置${i}行${j}列`);
+          console.log(`目标位置${i}行${k}列`);
+          console.log("当前值", matrix[i][j].value);
+          console.log("目标值", matrix[i][k].value);
+
           if (matrix[i][k].value === 0) {
             matrix[i][k].value = matrix[i][j].value;
             matrix[i][j].value = 0;
