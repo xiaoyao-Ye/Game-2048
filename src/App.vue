@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import GameCopilotX from "./components/Game-copilot-x.vue";
-// import Game from "./components/Game.vue";
+// import GameCopilotX from "./components/Game-copilot-x.vue";
+import Game from "./components/Game.vue";
 </script>
 
 <template>
@@ -12,8 +12,8 @@ import GameCopilotX from "./components/Game-copilot-x.vue";
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div> -->
-  <GameCopilotX />
-  <!-- <Game /> -->
+  <!-- <GameCopilotX /> -->
+  <Game />
 </template>
 
 <style scoped>

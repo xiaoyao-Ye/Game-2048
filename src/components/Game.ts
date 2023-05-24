@@ -74,6 +74,7 @@ const move = (direction: Direction) => {
   };
 
   const moveLeft = (matrix: Tile[][]) => {
+    let moved = false;
     for (let i = 0; i < matrix.length; i++) {
       let k = 0;
       for (let j = 1; j < matrix[0].length; j++) {
@@ -81,19 +82,25 @@ const move = (direction: Direction) => {
           if (matrix[i][k].value === 0) {
             matrix[i][k].value = matrix[i][j].value;
             matrix[i][j].value = 0;
-          } else if (matrix[i][k].value === matrix[i][j].value) {
+            moved = true;
+          } else if (matrix[i][k].value === matrix[i][j].value && !matrix[i][k].merged && !matrix[i][j].merged) {
             matrix[i][k].value *= 2;
             matrix[i][j].value = 0;
-            k++;
+            matrix[i][k].merged = true;
+            moved = true;
           } else {
             k++;
             if (k !== j) {
               matrix[i][k].value = matrix[i][j].value;
               matrix[i][j].value = 0;
+              moved = true;
             }
           }
         }
       }
+    }
+    if (moved) {
+      addTile(createTile());
     }
   };
 
@@ -131,4 +138,21 @@ const move = (direction: Direction) => {
   }
 };
 
-export { MAP_SIZE, board, Tile, reset, createTile, addTile, move };
+const keydownHandle = (event: KeyboardEvent) => {
+  switch (event.key) {
+    case "ArrowUp":
+      move("up");
+      break;
+    case "ArrowDown":
+      move("down");
+      break;
+    case "ArrowLeft":
+      move("left");
+      break;
+    case "ArrowRight":
+      move("right");
+      break;
+  }
+};
+
+export { MAP_SIZE, board, Tile, reset, createTile, addTile, move, keydownHandle };
