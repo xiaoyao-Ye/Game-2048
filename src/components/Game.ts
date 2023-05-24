@@ -59,80 +59,74 @@ const addTile = (cell: Tile) => {
 type Direction = "up" | "down" | "left" | "right";
 
 const move = (direction: Direction) => {
+  const transpose = (matrix: Tile[][]) => {
+    for (let i = 0; i < matrix.length; i++) {
+      for (let j = i; j < matrix[0].length; j++) {
+        [matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]];
+      }
+    }
+  };
+
+  const reverseRows = (matrix: Tile[][]) => {
+    for (let i = 0; i < matrix.length; i++) {
+      matrix[i].reverse();
+    }
+  };
+
+  const moveLeft = (matrix: Tile[][]) => {
+    for (let i = 0; i < matrix.length; i++) {
+      let k = 0;
+      for (let j = 1; j < matrix[0].length; j++) {
+        if (matrix[i][j].value !== 0) {
+          if (matrix[i][k].value === 0) {
+            matrix[i][k].value = matrix[i][j].value;
+            matrix[i][j].value = 0;
+          } else if (matrix[i][k].value === matrix[i][j].value) {
+            matrix[i][k].value *= 2;
+            matrix[i][j].value = 0;
+            k++;
+          } else {
+            k++;
+            if (k !== j) {
+              matrix[i][k].value = matrix[i][j].value;
+              matrix[i][j].value = 0;
+            }
+          }
+        }
+      }
+    }
+  };
+
+  const moveRight = (matrix: Tile[][]) => {
+    reverseRows(matrix);
+    moveLeft(matrix);
+    reverseRows(matrix);
+  };
+
+  const moveUp = (matrix: Tile[][]) => {
+    transpose(matrix);
+    moveLeft(matrix);
+    transpose(matrix);
+  };
+
+  const moveDown = (matrix: Tile[][]) => {
+    transpose(matrix);
+    moveRight(matrix);
+    transpose(matrix);
+  };
+
   switch (direction) {
     case "up":
-      for (let j = 0; j < 4; j++) {
-        for (let i = 1; i < 4; i++) {
-          if (board.value[i][j].value === 0) continue;
-          // 如果当前格子不为空
-          let k = i;
-          // 向上移动格子，直到遇到边界或非空格子
-          while (k > 0 && board.value[k - 1][j].value === 0) {
-            board.value[k - 1][j].value = board.value[k][j].value;
-            board.value[k][j].value = 0;
-            k--;
-          }
-          // 如果上方格子与当前格子的值相等，则合并它们
-          if (k > 0 && board.value[k - 1][j].value === board.value[k][j].value) {
-            board.value[k - 1][j].value *= 2;
-            board.value[k][j].value = 0;
-          }
-        }
-      }
+      moveUp(board.value);
       break;
     case "down":
-      for (let j = 0; j < 4; j++) {
-        for (let i = 2; i >= 0; i--) {
-          if (board.value[i][j].value !== 0) {
-            let k = i;
-            while (k < 3 && board.value[k + 1][j].value === 0) {
-              board.value[k + 1][j].value = board.value[k][j].value;
-              board.value[k][j].value = 0;
-              k++;
-            }
-            if (k < 3 && board.value[k + 1][j].value === board.value[k][j].value) {
-              board.value[k + 1][j].value *= 2;
-              board.value[k][j].value = 0;
-            }
-          }
-        }
-      }
+      moveDown(board.value);
       break;
     case "left":
-      for (let i = 0; i < 4; i++) {
-        for (let j = 1; j < 4; j++) {
-          if (board.value[i][j].value !== 0) {
-            let k = j;
-            while (k > 0 && board.value[i][k - 1].value === 0) {
-              board.value[i][k - 1].value = board.value[i][k].value;
-              board.value[i][k].value = 0;
-              k--;
-            }
-            if (k > 0 && board.value[i][k - 1].value === board.value[i][k].value) {
-              board.value[i][k - 1].value *= 2;
-              board.value[i][k].value = 0;
-            }
-          }
-        }
-      }
+      moveLeft(board.value);
       break;
     case "right":
-      for (let i = 0; i < 4; i++) {
-        for (let j = 2; j >= 0; j--) {
-          if (board.value[i][j].value !== 0) {
-            let k = j;
-            while (k < 3 && board.value[i][k + 1].value === 0) {
-              board.value[i][k + 1].value = board.value[i][k].value;
-              board.value[i][k].value = 0;
-              k++;
-            }
-            if (k < 3 && board.value[i][k + 1].value === board.value[i][k].value) {
-              board.value[i][k + 1].value *= 2;
-              board.value[i][k].value = 0;
-            }
-          }
-        }
-      }
+      moveRight(board.value);
       break;
   }
 };
