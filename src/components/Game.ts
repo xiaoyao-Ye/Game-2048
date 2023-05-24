@@ -12,7 +12,10 @@ const MAP_SIZE = 4;
 
 const board = ref<Tile[][]>([]);
 
+const score = ref(0);
+
 const reset = () => {
+  score.value = 0;
   // Clear the board
   for (let i = 0; i < MAP_SIZE; i++) {
     for (let j = 0; j < MAP_SIZE; j++) {
@@ -80,6 +83,7 @@ const move = (direction: Direction) => {
             board.value[k - 1][j].value *= 2;
             board.value[k][j].value = 0;
             moved = true;
+            score.value += board.value[k - 1][j].value;
           }
         }
       }
@@ -99,6 +103,7 @@ const move = (direction: Direction) => {
             board.value[k + 1][j].value *= 2;
             board.value[k][j].value = 0;
             moved = true;
+            score.value += board.value[k + 1][j].value;
           }
         }
       }
@@ -120,6 +125,7 @@ const move = (direction: Direction) => {
             board.value[i][k - 1].value *= 2;
             board.value[i][k].value = 0;
             moved = true;
+            score.value += board.value[i][k - 1].value;
           }
         }
       }
@@ -139,6 +145,7 @@ const move = (direction: Direction) => {
             board.value[i][k + 1].value *= 2;
             board.value[i][k].value = 0;
             moved = true;
+            score.value += board.value[i][k + 1].value;
           }
         }
       }
@@ -170,4 +177,4 @@ const keydownHandle = (event: KeyboardEvent) => {
   }
 };
 
-export { MAP_SIZE, board, Tile, reset, createTile, addTile, move, keydownHandle };
+export { MAP_SIZE, board, score, Tile, reset, createTile, addTile, move, keydownHandle };

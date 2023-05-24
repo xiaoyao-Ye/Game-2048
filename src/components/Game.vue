@@ -1,5 +1,6 @@
 <template>
   <div class="game">
+    <div class="score">score: {{ score }}</div>
     <div class="board">
       <div v-for="(row, rowIndex) in board" :key="rowIndex" class="row">
         <div v-for="(cell, colIndex) in row" :key="colIndex" class="cell" :class="'cell-' + cell.value">
@@ -8,14 +9,14 @@
       </div>
     </div>
     <div class="controls">
-      <button @click="reset">Reset</button>
+      <button @click="reset">New Game</button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, onUnmounted } from "vue";
-import { board, reset, createTile, addTile, keydownHandle } from "./Game";
+import { board, score, reset, createTile, addTile, keydownHandle } from "./Game";
 onMounted(() => {
   reset();
   addTile(createTile());

@@ -1,5 +1,5 @@
 import { it, expect, describe, beforeEach } from "vitest";
-import { createTile, addTile, reset, board, move } from "./Game";
+import { createTile, addTile, reset, board, move, score } from "./Game";
 
 describe("test create game", () => {
   beforeEach(() => {
@@ -23,9 +23,22 @@ describe("test create game", () => {
   it("should reset the board", () => {
     const tile = createTile(2);
     addTile(tile);
+    score.value = 8;
+
     reset();
+
+    expect(score.value).toBe(0);
     expect(board.value.flat().some(t => t === tile)).toBe(false);
     expect(board.value.flat().every(t => t.value === 0)).toBe(true);
+  });
+
+  it("score", () => {
+    score.value = 0;
+    board.value[0][0] = createTile(2);
+    board.value[1][0] = createTile(2);
+    move("up");
+
+    expect(score.value).toBe(4);
   });
 });
 
