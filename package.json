@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "vitest run",
-    "dev": "vite",
+    "dev": "vite --host --port 8000",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "preinstall": "npx only-allow pnpm",

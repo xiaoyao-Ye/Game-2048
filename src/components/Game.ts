@@ -67,8 +67,9 @@ const move = (direction: Direction) => {
   switch (direction) {
     case "up":
       for (let j = 0; j < 4; j++) {
-        for (let i = 1; i < 4; i++) {
+        for (let i = 0; i < 4; i++) {
           if (board.value[i][j].value === 0) continue;
+          board.value[i][j].merged = false;
           // 如果当前格子不为空
           let k = i;
           // 向上移动格子，直到遇到边界或非空格子
@@ -79,8 +80,9 @@ const move = (direction: Direction) => {
             k--;
           }
           // 如果上方格子与当前格子的值相等，则合并它们
-          if (k > 0 && board.value[k - 1][j].value === board.value[k][j].value) {
+          if (k > 0 && !board.value[k - 1][j].merged && board.value[k - 1][j].value === board.value[k][j].value) {
             board.value[k - 1][j].value *= 2;
+            board.value[k - 1][j].merged = true;
             board.value[k][j].value = 0;
             moved = true;
             score.value += board.value[k - 1][j].value;
@@ -90,8 +92,9 @@ const move = (direction: Direction) => {
       break;
     case "down":
       for (let j = 0; j < 4; j++) {
-        for (let i = 2; i >= 0; i--) {
+        for (let i = 3; i >= 0; i--) {
           if (board.value[i][j].value === 0) continue;
+          board.value[i][j].merged = false;
           let k = i;
           while (k < 3 && board.value[k + 1][j].value === 0) {
             board.value[k + 1][j].value = board.value[k][j].value;
@@ -99,8 +102,9 @@ const move = (direction: Direction) => {
             moved = true;
             k++;
           }
-          if (k < 3 && board.value[k + 1][j].value === board.value[k][j].value) {
+          if (k < 3 && !board.value[k + 1][j].merged && board.value[k + 1][j].value === board.value[k][j].value) {
             board.value[k + 1][j].value *= 2;
+            board.value[k + 1][j].merged = true;
             board.value[k][j].value = 0;
             moved = true;
             score.value += board.value[k + 1][j].value;
@@ -110,8 +114,9 @@ const move = (direction: Direction) => {
       break;
     case "left":
       for (let i = 0; i < 4; i++) {
-        for (let j = 1; j < 4; j++) {
+        for (let j = 0; j < 4; j++) {
           if (board.value[i][j].value === 0) continue;
+          board.value[i][j].merged = false;
           let k = j;
           // 目标为0
           while (k > 0 && board.value[i][k - 1].value === 0) {
@@ -121,8 +126,9 @@ const move = (direction: Direction) => {
             k--;
           }
           // 目标可合并
-          if (k > 0 && board.value[i][k - 1].value === board.value[i][k].value) {
+          if (k > 0 && !board.value[i][k - 1].merged && board.value[i][k - 1].value === board.value[i][k].value) {
             board.value[i][k - 1].value *= 2;
+            board.value[i][k - 1].merged = true;
             board.value[i][k].value = 0;
             moved = true;
             score.value += board.value[i][k - 1].value;
@@ -132,8 +138,9 @@ const move = (direction: Direction) => {
       break;
     case "right":
       for (let i = 0; i < 4; i++) {
-        for (let j = 2; j >= 0; j--) {
+        for (let j = 3; j >= 0; j--) {
           if (board.value[i][j].value === 0) continue;
+          board.value[i][j].merged = false;
           let k = j;
           while (k < 3 && board.value[i][k + 1].value === 0) {
             board.value[i][k + 1].value = board.value[i][k].value;
@@ -141,8 +148,9 @@ const move = (direction: Direction) => {
             moved = true;
             k++;
           }
-          if (k < 3 && board.value[i][k + 1].value === board.value[i][k].value) {
+          if (k < 3 && !board.value[i][k + 1].merged && board.value[i][k + 1].value === board.value[i][k].value) {
             board.value[i][k + 1].value *= 2;
+            board.value[i][k + 1].merged = true;
             board.value[i][k].value = 0;
             moved = true;
             score.value += board.value[i][k + 1].value;
