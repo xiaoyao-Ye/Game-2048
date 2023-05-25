@@ -491,3 +491,7 @@ In this example, the :active pseudo-class is used to apply the style when the ti
 ## TODO
 
 - [ ] 使用 unocss 改写样式, 完成响应式
+- [ ] 移动动画合并动画
+- [ ] win or over
+- [ ] Bigger Board
+- [ ] Optimize code
