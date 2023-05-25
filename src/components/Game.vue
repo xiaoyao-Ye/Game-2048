@@ -1,9 +1,13 @@
 <template>
-  <div class="game">
+  <div class="flex items-center justify-center flex-col">
     <div class="score">score: {{ score }}</div>
-    <div class="board">
-      <div v-for="(row, rowIndex) in board" :key="rowIndex" class="row">
-        <div v-for="(cell, colIndex) in row" :key="colIndex" class="cell" :class="'cell-' + cell.value">
+    <div class="flex flex-col justify-between w-400px h-400px p-8px rd-8px bg-#bbada0 hidden">
+      <div v-for="(row, rowIndex) in board" :key="rowIndex" class="flex justify-between h-95px">
+        <div
+          v-for="(cell, colIndex) in row"
+          :key="colIndex"
+          class="flex items-center justify-center w-95px text-32px fw-bold text-#776e65 bg-#cdc1b4 rd-8px animate-fade-in"
+          :class="`bg-${setBG(cell.value)}`">
           {{ cell.value || "" }}
         </div>
       </div>
@@ -28,92 +32,24 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener("keydown", keydownHandle);
 });
+
+const setBG = (value: number) => {
+  const colors = [
+    "#ccc0b3",
+    "#eee4da",
+    "#ede0c8",
+    "#f2b179",
+    "#f59563",
+    "#f67c5f",
+    "#f65e3b",
+    "#edcf72",
+    "#edcc61",
+    "#edc850",
+    "#edc53f",
+    "#edc22e",
+  ];
+  return colors[Math.log2(value)] || colors[0];
+};
 </script>
 
-<style scoped>
-.game {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.board {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 400px;
-  height: 400px;
-  padding: 8px;
-  background-color: #bbada0;
-  border-radius: 8px;
-}
-
-.row {
-  display: flex;
-  justify-content: space-between;
-  height: 95px;
-}
-
-.cell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 95px;
-  font-size: 32px;
-  font-weight: bold;
-  color: #776e65;
-  background-color: #cdc1b4;
-  border-radius: 8px;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.cell-0 {
-  background-color: #ccc0b3;
-}
-
-.cell-2 {
-  background-color: #eee4da;
-}
-
-.cell-4 {
-  background-color: #ede0c8;
-}
-
-.cell-8 {
-  background-color: #f2b179;
-}
-
-.cell-16 {
-  background-color: #f59563;
-}
-
-.cell-32 {
-  background-color: #f67c5f;
-}
-
-.cell-64 {
-  background-color: #f65e3b;
-}
-
-.cell-128 {
-  background-color: #edcf72;
-}
-
-.cell-256 {
-  background-color: #edcc61;
-}
-
-.cell-512 {
-  background-color: #edc850;
-}
-
-.cell-1024 {
-  background-color: #edc53f;
-}
-
-.cell-2048 {
-  background-color: #edc22e;
-}
-</style>
+<style scoped></style>
