@@ -14,6 +14,8 @@ const board = ref<Tile[][]>([]);
 
 const score = ref(0);
 
+const gameOver = ref(false);
+
 const reset = () => {
   score.value = 0;
   // Clear the board
@@ -163,6 +165,23 @@ const move = (direction: Direction) => {
   return moved;
 };
 
+const isOver = (): boolean => {
+  for (let row = 0; row < board.value.length; row++) {
+    for (let col = 0; col < board.value[row].length; col++) {
+      if (board.value[row][col].value === 0) {
+        return false;
+      }
+      if (row > 0 && board.value[row][col].value === board.value[row - 1][col].value) {
+        return false;
+      }
+      if (col > 0 && board.value[row][col].value === board.value[row][col - 1].value) {
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
 const keydownHandle = (event: KeyboardEvent) => {
   let moved = false;
   switch (event.key) {
@@ -182,7 +201,8 @@ const keydownHandle = (event: KeyboardEvent) => {
   // 如果进行过有效操作随机创建一个新的块
   if (moved) {
     addTile(createTile());
+    gameOver.value = isOver();
   }
 };
 
-export { MAP_SIZE, board, score, Tile, reset, createTile, addTile, move, keydownHandle };
+export { MAP_SIZE, board, gameOver, score, Tile, reset, createTile, addTile, move, keydownHandle, isOver };
