@@ -1,5 +1,5 @@
 import { it, expect, describe, beforeEach } from "vitest";
-import { createTile, addTile, reset, board, move, score } from "./Game";
+import { createTile, addTile, reset, board, move, score, isOver } from "./Game";
 
 describe("test create game", () => {
   beforeEach(() => {
@@ -30,15 +30,6 @@ describe("test create game", () => {
     expect(score.value).toBe(0);
     expect(board.value.flat().some(t => t === tile)).toBe(false);
     expect(board.value.flat().every(t => t.value === 0)).toBe(true);
-  });
-
-  it("score", () => {
-    score.value = 0;
-    board.value[0][0] = createTile(2);
-    board.value[1][0] = createTile(2);
-    move("up");
-
-    expect(score.value).toBe(4);
   });
 });
 
@@ -181,13 +172,60 @@ describe("merge", () => {
   });
 });
 
-describe("test", () => {
-  // TODO: 可能需要 browser 环境
-  it.skip("should add handle", () => {});
+describe("other", () => {
+  beforeEach(() => {
+    reset();
+  });
 
-  it.todo("should add score", () => {});
+  it("score", () => {
+    score.value = 0;
+    board.value[0][0] = createTile(2);
+    board.value[1][0] = createTile(2);
+    move("up");
+
+    expect(score.value).toBe(4);
+  });
+
+  it("score", () => {
+    score.value = 0;
+    board.value[0][0] = createTile(2);
+    board.value[1][0] = createTile(2);
+    move("up");
+
+    expect(score.value).toBe(4);
+  });
+
+  it("should over", () => {
+    const overBoard = [
+      [2, 4, 8, 16],
+      [8, 2, 4, 2],
+      [2, 32, 64, 128],
+      [4, 2, 256, 8],
+    ];
+    overBoard.forEach((row, rowIdx) => {
+      row.forEach((cell, colIdx) => {
+        board.value[rowIdx][colIdx].value = cell;
+      });
+    });
+
+    expect(isOver()).toBe(true);
+  });
+
+  it("should not over", () => {
+    const notOverBoard = [
+      [2, 4, 8, 16],
+      [8, 2, 4, 2],
+      [2, 32, 64, 128],
+      [4, 2, 256, 256],
+    ];
+    notOverBoard.forEach((row, rowIdx) => {
+      row.forEach((cell, colIdx) => {
+        board.value[rowIdx][colIdx].value = cell;
+      });
+    });
+
+    expect(isOver()).toBe(false);
+  });
 
   it.todo("should you win", () => {});
-
-  it.todo("should over", () => {});
 });
