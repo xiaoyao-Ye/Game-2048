@@ -7,6 +7,7 @@ import vue from "@vitejs/plugin-vue";
 
 // Export the configuration object for Vite
 export default defineConfig({
+  base: "/Game-2048",
   // Use the Vue plugin
   plugins: [vue(), UnoCSS()],
 });
