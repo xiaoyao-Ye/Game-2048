@@ -1,5 +1,15 @@
 # Vue 3 + TypeScript + Vite
 
+> 基于 copilot x 进行开发, 后续 code review 优化代码完成本项目
+
+## features
+
+- 使用 TS + Vue3 + unocss + vitest
+- 响应式支持各类机型
+- 支持 undo 可后退 5 回合(人人都能 2048)
+- 支持 3x3 4x4 5x5 6x6(每次操作额外生成一个瓷砖) 的棋盘
+- ...
+
 ## 使用 vue+typescript 编写一个 2048 游戏, 包含该游戏的所有逻辑操作, 输出到一个 vue 文件
 
 以下是一个简单的 Vue + TypeScript 2048 游戏的示例代码。该代码包含了游戏逻辑和界面的实现。你可以将其复制到一个 Vue 单文件组件中，然后在浏览器中运行。
@@ -490,8 +500,8 @@ In this example, the :active pseudo-class is used to apply the style when the ti
 
 ## TODO
 
-- [x] 使用 unocss 改写样式, 完成响应式
+- [ ] 存入本地存储
+- [ ] score 分数增加动画
 - [ ] 移动动画合并动画
-- [ ] win or over
-- [ ] Bigger Board
 - [ ] Optimize code
+- [ ] Optimize test(目前不支持其他棋盘)

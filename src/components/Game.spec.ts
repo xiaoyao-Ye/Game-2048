@@ -1,5 +1,5 @@
 import { it, expect, describe, beforeEach } from "vitest";
-import { createTile, addTile, reset, board, move, score, isOver } from "./Game";
+import { createTile, addTile, reset, board, move, score, isOver, win, setBoard, getBoard } from "./Game";
 
 describe("test create game", () => {
   beforeEach(() => {
@@ -38,64 +38,104 @@ describe("test move", () => {
     reset();
   });
 
-  it("should move tiles up : Easy", () => {
-    board.value[2][0] = createTile(2);
-    board.value[3][1] = createTile(2);
+  it("should move tiles ArrowUp : Easy", () => {
+    const map = [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [2, 0, 0, 0],
+      [0, 2, 0, 0],
+    ];
+    setBoard(map);
+    const shouldMap = [
+      [2, 2, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ];
 
-    move("up");
+    move("ArrowUp");
 
-    expect(board.value[2][0].value).toBe(0);
-    expect(board.value[3][1].value).toBe(0);
-    expect(board.value[0][0].value).toBe(2);
-    expect(board.value[0][1].value).toBe(2);
+    expect(getBoard()).toEqual(shouldMap);
   });
 
-  it("should move tiles up : Medium", () => {
-    board.value[1][0] = createTile(4);
-    board.value[2][0] = createTile(2);
-    board.value[3][0] = createTile(4);
+  it("should move tiles ArrowUp : Medium", () => {
+    const map = [
+      [0, 0, 0, 0],
+      [4, 0, 0, 0],
+      [2, 0, 0, 0],
+      [4, 0, 0, 0],
+    ];
+    setBoard(map);
+    const shouldMap = [
+      [4, 0, 0, 0],
+      [2, 0, 0, 0],
+      [4, 0, 0, 0],
+      [0, 0, 0, 0],
+    ];
 
-    move("up");
+    move("ArrowUp");
 
-    expect(board.value[0][0].value).toBe(4);
-    expect(board.value[1][0].value).toBe(2);
-    expect(board.value[2][0].value).toBe(4);
+    expect(getBoard()).toEqual(shouldMap);
   });
 
-  it("should move tiles down", () => {
-    board.value[1][0] = createTile(2);
-    board.value[2][1] = createTile(2);
+  it("should move tiles ArrowDown", () => {
+    const map = [
+      [0, 0, 0, 0],
+      [2, 0, 0, 0],
+      [0, 2, 0, 0],
+      [0, 0, 0, 0],
+    ];
+    setBoard(map);
+    const shouldMap = [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [2, 2, 0, 0],
+    ];
 
-    move("down");
+    move("ArrowDown");
 
-    expect(board.value[1][0].value).toBe(0);
-    expect(board.value[2][1].value).toBe(0);
-    expect(board.value[3][0].value).toBe(2);
-    expect(board.value[3][1].value).toBe(2);
+    expect(getBoard()).toEqual(shouldMap);
   });
 
-  it("should move tiles left", () => {
-    board.value[0][2] = createTile(2);
-    board.value[3][3] = createTile(2);
+  it("should move tiles ArrowLeft", () => {
+    const map = [
+      [0, 0, 2, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 2, 0],
+    ];
+    setBoard(map);
+    const shouldMap = [
+      [2, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [2, 0, 0, 0],
+    ];
 
-    move("left");
+    move("ArrowLeft");
 
-    expect(board.value[0][2].value).toBe(0);
-    expect(board.value[3][3].value).toBe(0);
-    expect(board.value[0][0].value).toBe(2);
-    expect(board.value[3][0].value).toBe(2);
+    expect(getBoard()).toEqual(shouldMap);
   });
 
-  it("should move tiles right", () => {
-    board.value[0][2] = createTile(2);
-    board.value[1][1] = createTile(2);
+  it("should move tiles ArrowRight", () => {
+    const map = [
+      [0, 0, 2, 0],
+      [0, 2, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ];
+    setBoard(map);
+    const shouldMap = [
+      [0, 0, 0, 2],
+      [0, 0, 0, 2],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ];
 
-    move("right");
+    move("ArrowRight");
 
-    expect(board.value[0][2].value).toBe(0);
-    expect(board.value[1][1].value).toBe(0);
-    expect(board.value[0][3].value).toBe(2);
-    expect(board.value[1][3].value).toBe(2);
+    expect(getBoard()).toEqual(shouldMap);
   });
 });
 
@@ -104,71 +144,135 @@ describe("merge", () => {
     reset();
   });
 
-  it("should merge tiles when moving up", () => {
-    board.value[0][0] = createTile(2);
-    board.value[1][0] = createTile(2);
-    move("up");
-    expect(board.value[0][0].value).toBe(4);
-    expect(board.value[1][0].value).toBe(0);
+  it("should merge tiles when moving ArrowUp", () => {
+    const map = [
+      [2, 0, 0, 0],
+      [2, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ];
+    setBoard(map);
+    const shouldMap = [
+      [4, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ];
+
+    move("ArrowUp");
+
+    expect(getBoard()).toEqual(shouldMap);
   });
 
-  it("should merge tiles when moving down", () => {
-    board.value[0][0] = createTile(2);
-    board.value[1][0] = createTile(2);
-    move("down");
-    expect(board.value[3][0].value).toBe(4);
-    expect(board.value[1][0].value).toBe(0);
+  it("should merge tiles when moving ArrowDown", () => {
+    const map = [
+      [2, 0, 0, 0],
+      [2, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ];
+    setBoard(map);
+    const shouldMap = [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [4, 0, 0, 0],
+    ];
+
+    move("ArrowDown");
+
+    expect(getBoard()).toEqual(shouldMap);
   });
 
-  it("should merge tiles when moving left", () => {
-    board.value[0][0] = createTile(2);
-    board.value[0][1] = createTile(2);
-    move("left");
-    expect(board.value[0][0].value).toBe(4);
-    expect(board.value[0][1].value).toBe(0);
+  it("should merge tiles when moving ArrowLeft", () => {
+    const map = [
+      [2, 2, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ];
+    setBoard(map);
+    const shouldMap = [
+      [4, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ];
+
+    move("ArrowLeft");
+
+    expect(getBoard()).toEqual(shouldMap);
   });
 
-  it("should merge tiles when moving right", () => {
-    board.value[0][0] = createTile(2);
-    board.value[0][1] = createTile(2);
-    move("right");
-    expect(board.value[0][3].value).toBe(4);
-    expect(board.value[0][1].value).toBe(0);
+  it("should merge tiles when moving ArrowRight", () => {
+    const map = [
+      [2, 2, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ];
+    setBoard(map);
+    const shouldMap = [
+      [0, 0, 0, 4],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ];
+
+    move("ArrowRight");
+
+    expect(getBoard()).toEqual(shouldMap);
   });
 
-  it("should merge tiles when moving left", () => {
-    board.value[3][0] = createTile(2);
-    board.value[3][1] = createTile(2);
-    board.value[3][2] = createTile(2);
-    board.value[3][3] = createTile(2);
+  it("should merge tiles when moving ArrowLeft", () => {
+    const map = [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [2, 2, 2, 2],
+    ];
+    setBoard(map);
+    const shouldMap = [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [4, 4, 0, 0],
+    ];
 
-    move("left");
+    move("ArrowLeft");
 
-    expect(board.value[3][0].value).toBe(4);
-    expect(board.value[3][1].value).toBe(4);
-    expect(board.value[3][2].value).toBe(0);
-    expect(board.value[3][3].value).toBe(0);
+    expect(getBoard()).toEqual(shouldMap);
   });
 
-  it("should merge tiles when moving left", () => {
-    board.value[3][0] = createTile(2);
-    board.value[3][1] = createTile(2);
-    board.value[3][2] = createTile(4);
-    board.value[3][3] = createTile(8);
+  it("should merge tiles when moving ArrowLeft", () => {
+    const map = [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [2, 2, 4, 8],
+    ];
+    setBoard(map);
+    const shouldMap = [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [4, 4, 8, 0],
+    ];
 
-    move("left");
+    move("ArrowLeft");
 
-    expect(board.value[3][0].value).toBe(4);
-    expect(board.value[3][1].value).toBe(4);
-    expect(board.value[3][2].value).toBe(8);
-    expect(board.value[3][3].value).toBe(0);
+    expect(getBoard()).toEqual(shouldMap);
 
-    move("left");
+    move("ArrowLeft");
 
-    expect(board.value[3][0].value).toBe(8);
-    expect(board.value[3][1].value).toBe(8);
-    expect(board.value[3][2].value).toBe(0);
-    expect(board.value[3][3].value).toBe(0);
+    const stepShouldMap = [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [8, 8, 0, 0],
+    ];
+
+    expect(getBoard()).toEqual(stepShouldMap);
   });
 });
 
@@ -181,7 +285,7 @@ describe("other", () => {
     score.value = 0;
     board.value[0][0] = createTile(2);
     board.value[1][0] = createTile(2);
-    move("up");
+    move("ArrowUp");
 
     expect(score.value).toBe(4);
   });
@@ -190,7 +294,7 @@ describe("other", () => {
     score.value = 0;
     board.value[0][0] = createTile(2);
     board.value[1][0] = createTile(2);
-    move("up");
+    move("ArrowUp");
 
     expect(score.value).toBe(4);
   });
@@ -202,11 +306,7 @@ describe("other", () => {
       [2, 32, 64, 128],
       [4, 2, 256, 8],
     ];
-    overBoard.forEach((row, rowIdx) => {
-      row.forEach((cell, colIdx) => {
-        board.value[rowIdx][colIdx].value = cell;
-      });
-    });
+    setBoard(overBoard);
 
     expect(isOver()).toBe(true);
   });
@@ -218,14 +318,23 @@ describe("other", () => {
       [2, 32, 64, 128],
       [4, 2, 256, 256],
     ];
-    notOverBoard.forEach((row, rowIdx) => {
-      row.forEach((cell, colIdx) => {
-        board.value[rowIdx][colIdx].value = cell;
-      });
-    });
+    setBoard(notOverBoard);
 
     expect(isOver()).toBe(false);
   });
 
-  it.todo("should you win", () => {});
+  it("should you win", () => {
+    win.value = false;
+    const notOverBoard = [
+      [2, 4, 8, 16],
+      [8, 2, 4, 2],
+      [2, 32, 64, 128],
+      [4, 2, 1024, 1024],
+    ];
+    setBoard(notOverBoard);
+
+    move("ArrowRight");
+
+    expect(win.value).toBe(true);
+  });
 });
