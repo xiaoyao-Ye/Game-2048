@@ -295,6 +295,16 @@ const touchEndHandle = (event: TouchEvent) => {
   }
   moveHandle(direction);
 };
+const onReset = () => {
+  reset();
+  addTile(createTile());
+  addTile(createTile());
+};
+
+const onSetBoardSize = (size: number) => {
+  setBoardSize(size);
+  onReset();
+};
 
 export {
   MAP_SIZE,
@@ -316,4 +326,6 @@ export {
   isOver,
   setBoard,
   getBoard,
+  onReset,
+  onSetBoardSize,
 };
