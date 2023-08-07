@@ -1,4 +1,4 @@
-import { computed, ref } from "vue";
+import { computed, ref, onMounted, onUnmounted } from "vue";
 
 class Tile {
   value: number = 0;
@@ -306,6 +306,27 @@ const onSetBoardSize = (size: number) => {
   onReset();
 };
 
+const preventTouchMove = (e: TouchEvent) => {
+  e.preventDefault();
+};
+
+const useGame = () => {
+  onMounted(() => {
+    onReset();
+    window.addEventListener("keydown", keydownHandle);
+    window.addEventListener("touchstart", touchStartHandle);
+    window.addEventListener("touchend", touchEndHandle);
+    window.addEventListener("touchmove", preventTouchMove, { passive: false });
+  });
+
+  onUnmounted(() => {
+    window.removeEventListener("keydown", keydownHandle);
+    window.removeEventListener("touchstart", touchStartHandle);
+    window.removeEventListener("touchend", touchEndHandle);
+    window.removeEventListener("touchmove", preventTouchMove);
+  });
+};
+
 export {
   MAP_SIZE,
   board,
@@ -328,4 +349,5 @@ export {
   getBoard,
   onReset,
   onSetBoardSize,
+  useGame,
 };

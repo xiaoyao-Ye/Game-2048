@@ -9,31 +9,12 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted } from "vue";
 import GameHeader from "./GameHeader.vue";
 import Board from "./Board.vue";
 import BoardSizePicker from "./BoardSizePicker.vue";
+import { useGame } from "@/hooks/Game";
 
-import { onReset, keydownHandle, touchStartHandle, touchEndHandle } from "@/hooks/Game";
-
-const preventTouchMove = (e: TouchEvent) => {
-  e.preventDefault();
-};
-
-onMounted(() => {
-  onReset();
-  window.addEventListener("keydown", keydownHandle);
-  window.addEventListener("touchstart", touchStartHandle);
-  window.addEventListener("touchend", touchEndHandle);
-  window.addEventListener("touchmove", preventTouchMove, { passive: false });
-});
-
-onUnmounted(() => {
-  window.removeEventListener("keydown", keydownHandle);
-  window.removeEventListener("touchstart", touchStartHandle);
-  window.removeEventListener("touchend", touchEndHandle);
-  window.removeEventListener("touchmove", preventTouchMove);
-});
+useGame();
 </script>
 
 <style scoped></style>
