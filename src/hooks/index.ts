@@ -1,8 +1,9 @@
 import { onMounted, onUnmounted } from "vue";
 import { generateBoard, generateTile, addTile } from "./board";
-import { board, gameOver, moveHandle, score, win } from "./logic";
+import { board, boardSize, gameOver, moveHandle, score, gameWin } from "./logic";
 import { Direction } from "@/types";
 
+// 监听触摸事件
 let startX = 0;
 let startY = 0;
 const touchStartHandle = (event: TouchEvent) => {
@@ -27,22 +28,24 @@ const touchEndHandle = (event: TouchEvent) => {
   moveHandle(direction);
 };
 
+// 监听键盘事件
 const keydownHandle = (event: KeyboardEvent) => {
   moveHandle(event.key as Direction);
 };
 
+// 阻止触摸事件的默认行为
 const preventTouchMove = (e: TouchEvent) => {
   e.preventDefault();
 };
 
+// 重置游戏
 const reset = () => {
   score.value = 0;
   gameOver.value = false;
-  win.value = false;
-  let map = generateBoard(4);
-  addTile(map, generateTile());
-  addTile(map, generateTile());
-  board.value = map;
+  gameWin.value = false;
+  board.value = generateBoard(boardSize.value);
+  addTile(board.value, generateTile());
+  addTile(board.value, generateTile());
 };
 
 const useGame = () => {

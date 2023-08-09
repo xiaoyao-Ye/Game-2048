@@ -15,4 +15,5 @@
 - [ ] 移动动画合并动画
 - [ ] Optimize code
 - [ ] Optimize test(目前不支持其他棋盘)
+- [ ] Optimize test(单独改数据不直观, 单独为测试写一个 setBoard 和 getBoard 让测试便于维护是否合理)
 - [ ] 音效

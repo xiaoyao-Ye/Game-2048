@@ -18,7 +18,7 @@ const generateBoard = (size: number): Tile[][] => {
   return board;
 };
 
-// 给地图添加方块
+// 获取所有空格子
 const getEmptyCells = (board: Tile[][]) => {
   const emptyTiles: { x: number; y: number }[] = [];
   for (let i = 0; i < board.length; i++) {
@@ -32,11 +32,13 @@ const getEmptyCells = (board: Tile[][]) => {
   return emptyTiles;
 };
 
+// 获取随机空格子
 const getRandomEmptyCell = (emptyTiles: { x: number; y: number }[]) => {
   const randomIndex = Math.floor(Math.random() * emptyTiles.length);
   return emptyTiles[randomIndex];
 };
 
+// 给地图的随机空格子添加方块
 const addTile = (board: Tile[][], tile: Tile) => {
   const emptyTiles = getEmptyCells(board);
   if (emptyTiles.length > 0) {

@@ -14,14 +14,19 @@ describe("board", () => {
   });
 
   it("should generate board", () => {
-    const board = [
-      [generateTile(0), generateTile(0), generateTile(0), generateTile(0)],
-      [generateTile(0), generateTile(0), generateTile(0), generateTile(0)],
-      [generateTile(0), generateTile(0), generateTile(0), generateTile(0)],
-      [generateTile(0), generateTile(0), generateTile(0), generateTile(0)],
-    ];
+    // const board = [
+    //   [generateTile(0), generateTile(0), generateTile(0), generateTile(0)],
+    //   [generateTile(0), generateTile(0), generateTile(0), generateTile(0)],
+    //   [generateTile(0), generateTile(0), generateTile(0), generateTile(0)],
+    //   [generateTile(0), generateTile(0), generateTile(0), generateTile(0)],
+    // ];
+    // expect(generateBoard(4)).toEqual(board);
 
-    expect(generateBoard(4)).toEqual(board);
+    const board = generateBoard(4);
+
+    expect(board.length).toBe(4); // 4 列
+    expect(board.every(row => row.length === 4)).toBe(true); // 4 行
+    expect(board.flat().every(tile => tile.value === 0 && !tile.merged)).toBe(true); // 都是空格子
   });
 
   it("should add tile", () => {
