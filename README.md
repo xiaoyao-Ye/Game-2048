@@ -15,3 +15,4 @@
 - [ ] 移动动画合并动画
 - [ ] Optimize code
 - [ ] Optimize test(目前不支持其他棋盘)
+- [ ] 音效
