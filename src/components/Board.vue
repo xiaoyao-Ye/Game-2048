@@ -1,16 +1,13 @@
 <template>
   <div
     class="relative w-full grid grid-gap-8px p-8px rd-8px bg-#bbada0"
-    :class="[`grid-cols-${MAP_SIZE}`, `grid-rows-${MAP_SIZE}`]">
+    :class="[`grid-cols-${boardSize}`, `grid-rows-${boardSize}`]">
     <div
       class="relative pt-100% h-0 text-32px fw-bold text-#776e65 bg-#cdc1b4 rd-8px"
-      v-for="(cell, rowIndex) in board.flat()"
-      :key="cell.id + rowIndex">
-      <!-- TODO: 这里应该可以去掉外面这层? 封装一个 BoardTile 组件? -->
-      <div
-        class="absolute top-0 left-0 w-full h-full flex items-center justify-center rd-8px"
-        :class="setBG(cell.value)"
-        :style="cell.style">
+      v-for="cell in board.flat()"
+      :key="cell.id">
+      <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center rd-8px" :class="setBG(cell.value)">
+        <!-- :style="cell.style" -->
         {{ cell.value || "" }}
       </div>
     </div>
@@ -21,7 +18,7 @@
 
 <script setup lang="ts">
 import Overlay from "./Overlay.vue";
-import { MAP_SIZE, board } from "@/hooks/Game";
+import { board, boardSize } from "@/hooks/logic";
 
 defineOptions({
   name: "Board",

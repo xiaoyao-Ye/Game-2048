@@ -12,7 +12,7 @@
 import GameHeader from "./GameHeader.vue";
 import Board from "./Board.vue";
 import BoardSizePicker from "./BoardSizePicker.vue";
-import { useGame } from "@/hooks/Game";
+import { useGame } from "@/hooks/index";
 
 useGame();
 </script>

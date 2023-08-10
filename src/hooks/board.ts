@@ -3,7 +3,7 @@ import { Tile } from "@/types";
 // 生成方块
 const generateTile = (value?: number, merged = false): Tile => {
   if (typeof value !== "number") value = Math.random() < 0.9 ? 2 : 4;
-  return { value, merged };
+  return { value, merged, id: Math.random() * 100000 };
 };
 
 // 生成地图
@@ -39,7 +39,7 @@ const getRandomEmptyCell = (emptyTiles: { x: number; y: number }[]) => {
 };
 
 // 给地图的随机空格子添加方块
-const addTile = (board: Tile[][], tile: Tile) => {
+const addTileToBoard = (board: Tile[][], tile: Tile) => {
   const emptyTiles = getEmptyCells(board);
   if (emptyTiles.length > 0) {
     const { x, y } = getRandomEmptyCell(emptyTiles);
@@ -47,4 +47,4 @@ const addTile = (board: Tile[][], tile: Tile) => {
   }
 };
 
-export { generateBoard, generateTile, addTile };
+export { generateBoard, generateTile, addTileToBoard };

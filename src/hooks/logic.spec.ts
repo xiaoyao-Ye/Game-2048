@@ -1,6 +1,7 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe, beforeEach } from "vitest";
 import { generateBoard } from "./board";
-import { isChanged, moveUp, isOver, isWin } from "./logic";
+import { bestScore, board, gameOver, isChanged, moveHandle, moveUp, reset, score } from "./logic";
+import { Tile } from "@/types";
 
 describe("move", () => {
   it("should move up", () => {
@@ -55,7 +56,7 @@ describe("move", () => {
     expect(board[3][0].value).toBe(0);
   });
 
-  it("is changed", () => {
+  it("board is changed", () => {
     const board = generateBoard(4);
     const boardCopy = JSON.parse(JSON.stringify(board));
     boardCopy[1][0].value = 2;
@@ -66,33 +67,36 @@ describe("move", () => {
     expect(notChanged).toBe(false);
     expect(changed).toBe(true);
   });
+});
 
-  it("game over", () => {
-    const board = generateBoard(4);
-    board[0][0].value = 2;
-    board[0][1].value = 4;
-    board[0][2].value = 2;
-    board[0][3].value = 4;
-    board[1][0].value = 4;
-    board[1][1].value = 2;
-    board[1][2].value = 4;
-    board[1][3].value = 2;
-    board[2][0].value = 2;
-    board[2][1].value = 4;
-    board[2][2].value = 2;
-    board[2][3].value = 4;
-    board[3][0].value = 4;
-    board[3][1].value = 2;
-    board[3][2].value = 4;
-    board[3][3].value = 2;
-
-    moveUp(board);
-
-    expect(isOver(board)).toBe(true);
+describe("moveHandle", () => {
+  beforeEach(() => {
+    reset();
   });
 
-  it("game win", () => {
-    expect(isWin(1024)).toBe(false);
-    expect(isWin(2048)).toBe(true);
+  it("should not move if game is over", () => {
+    gameOver.value = true;
+    const originalBoard: Tile[][] = JSON.parse(JSON.stringify(board.value));
+
+    moveHandle("ArrowUp");
+
+    expect(board.value).toEqual(originalBoard);
+  });
+
+  it("should move tiles up and merge them if possible", () => {
+    board.value = generateBoard(4);
+    board.value[0][0].value = 2;
+    board.value[1][0].value = 2;
+    const originalBoard: Tile[][] = JSON.parse(JSON.stringify(board.value));
+
+    moveHandle("ArrowUp");
+
+    expect(board.value[0][0].value).toBe(4);
+    expect(score.value).toBe(4);
+    expect(bestScore.value).toBe(4);
+    expect(gameOver.value).toBe(false);
+    expect(isChanged(originalBoard, board.value)).toBe(true);
+    // 添加了一个新的 tile
+    expect(board.value.flat().filter(tile => tile.value !== 0).length).toBe(2);
   });
 });

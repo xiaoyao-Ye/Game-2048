@@ -19,15 +19,16 @@
         </div>
       </div>
       <div class="flex mt-10px">
-        <div class="button mr-5px" :class="canUndo ? 'hover:bg-#8F7A66DD' : 'op-50 cursor-no-drop'" @click="onUndo">Undo</div>
-        <div class="button" @click="onReset">New Game</div>
+        <div class="button mr-5px" :class="canUndo ? 'hover:bg-#8F7A66DD' : 'op-50 cursor-no-drop'" @click="undo">Undo</div>
+        <div class="button" @click="reset">New Game</div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { score, bestScore, canUndo, onUndo, onReset } from "@/hooks/Game";
+import { score, bestScore, reset } from "@/hooks/logic";
+import { canUndo, undo } from "@/hooks/state";
 
 defineOptions({
   name: "GameHeader",
@@ -35,3 +36,4 @@ defineOptions({
 </script>
 
 <style scoped></style>
+@/hooks/state

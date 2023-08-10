@@ -1,5 +1,6 @@
 import { it, expect, describe } from "vitest";
-import { rotate, rotateReverse } from "./rotate";
+import { getBoardValue, rotate, rotateReverse, setBoardValue } from "./tool";
+import { generateBoard } from "./board";
 
 // describe("rotateReverse", () => {});
 // rotateReverse和rotate的相似度太高了, 直接偷懒跟rotate一起测试了, 不知道这样是否合理
@@ -79,5 +80,38 @@ describe("rotate and rotate reverse", () => {
     rotateReverse(matrix, "ArrowLeft");
 
     expect(matrix).toEqual(matrix);
+  });
+});
+
+describe("get board value and set board value", () => {
+  it("should get board values", () => {
+    const board = generateBoard(4);
+    board[0][0].value = 2;
+    board[2][0].value = 2;
+    const should = [
+      [2, 0, 0, 0],
+      [0, 0, 0, 0],
+      [2, 0, 0, 0],
+      [0, 0, 0, 0],
+    ];
+
+    const values = getBoardValue(board);
+
+    expect(values).toEqual(should);
+  });
+
+  it("should set board values", () => {
+    const board = generateBoard(4);
+    const values = [
+      [2, 0, 0, 0],
+      [0, 0, 0, 0],
+      [4, 0, 0, 0],
+      [0, 0, 0, 0],
+    ];
+
+    setBoardValue(board, values);
+
+    expect(board[0][0].value).toBe(2);
+    expect(board[2][0].value).toBe(4);
   });
 });

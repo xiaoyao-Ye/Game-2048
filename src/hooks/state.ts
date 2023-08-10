@@ -1,10 +1,32 @@
 import { Tile } from "@/types";
+import { computed, ref } from "vue";
+import { gameOver, score, board } from "./logic";
+import { getBoardValue, setBoardValue } from "./tool";
 
-// 这里是游戏状态部分hook
+// undo
+const undoLen = 5;
+const history = ref<{ boardValues: number[][]; score: number }[]>([]);
+const canUndo = computed(() => Boolean(history.value.length) && !gameOver.value);
+
+const saveHistory = (board: Tile[][], score: number) => {
+  const boardValues = getBoardValue(board);
+  history.value.push({ boardValues, score });
+  if (history.value.length > undoLen) history.value.shift();
+};
+
+const undo = () => {
+  if (!canUndo.value) return;
+  const { boardValues, score: HistoricalScore } = history.value.pop()!;
+  setBoardValue(board.value, boardValues);
+  score.value = HistoricalScore;
+};
+
+// 2048 is the win condition
 const isWin = (value: number) => {
   return value >= 2048;
 };
 
+// 判断是否没有操作空间
 const isOver = (board: Tile[][]): boolean => {
   for (let row = 0; row < board.length; row++) {
     for (let col = 0; col < board[row].length; col++) {
@@ -18,4 +40,4 @@ const isOver = (board: Tile[][]): boolean => {
   return true;
 };
 
-export { isWin, isOver };
+export { history, canUndo, saveHistory, undo, isWin, isOver };

@@ -1,7 +1,6 @@
 import { onMounted, onUnmounted } from "vue";
-import { generateBoard, generateTile, addTile } from "./board";
-import { board, boardSize, gameOver, moveHandle, score, gameWin } from "./logic";
 import { Direction } from "@/types";
+import { moveHandle, reset } from "./logic";
 
 // 监听触摸事件
 let startX = 0;
@@ -38,16 +37,6 @@ const preventTouchMove = (e: TouchEvent) => {
   e.preventDefault();
 };
 
-// 重置游戏
-const reset = () => {
-  score.value = 0;
-  gameOver.value = false;
-  gameWin.value = false;
-  board.value = generateBoard(boardSize.value);
-  addTile(board.value, generateTile());
-  addTile(board.value, generateTile());
-};
-
 const useGame = () => {
   onMounted(() => {
     window.addEventListener("keydown", keydownHandle);
@@ -64,8 +53,6 @@ const useGame = () => {
     window.removeEventListener("touchend", touchEndHandle);
     window.removeEventListener("touchmove", preventTouchMove);
   });
-
-  return { board };
 };
 
 export { useGame };

@@ -1,15 +1,13 @@
 import { Direction, Tile } from "@/types";
 import { ref } from "vue";
-import { rotate, rotateReverse } from "./rotate";
-import { addTile, generateTile } from "./board";
-import { isOver, isWin } from "./state";
+import { rotate, rotateReverse } from "./tool";
+import { addTileToBoard, generateBoard, generateTile } from "./board";
+import { isOver, isWin, saveHistory, history } from "./state";
 
 const score = ref(0);
 const bestScore = ref(0);
-// 能否放到state里面?
 const gameOver = ref(false);
 const gameWin = ref(false);
-// 能否放到board里面?
 const board = ref<Tile[][]>([]);
 const boardSize = ref(4);
 
@@ -54,7 +52,6 @@ const isChanged = (board: Tile[][], boardCopy: Tile[][]) => {
 const moveHandle = (direction: Direction) => {
   // 下面这行放在键盘事件和触摸事件里面会更好一些, 但是需要在多个函数编写相同的代码, 所以就暂时放在这里了, 后面再优化
   if (gameOver.value) return;
-  // saveHistory();
   // 深拷贝 board
   let boardCopy: Tile[][] = JSON.parse(JSON.stringify(board.value));
   // 旋转 board 为向上移动
@@ -66,18 +63,35 @@ const moveHandle = (direction: Direction) => {
   // 用于判断是否进行过有效操作
   let changed = isChanged(board.value, boardCopy);
   if (changed) {
+    // 保存历史记录
+    saveHistory(board.value, score.value);
+    // 更新 board
     board.value = boardCopy;
     // 如果进行过有效操作随机创建一个新的块
-    addTile(board.value, generateTile());
+    addTileToBoard(board.value, generateTile());
     // 如果棋盘大小大于等于 6, 则再创建一个新的块
-    if (boardSize.value >= 6) addTile(board.value, generateTile());
+    if (boardSize.value >= 6) addTileToBoard(board.value, generateTile());
     // 记录最高分
     if (bestScore.value < score.value) bestScore.value = score.value;
     // 判断游戏是否结束
     gameOver.value = isOver(board.value);
-    // } else {
-    //   history.value.pop();
   }
 };
 
-export { board, boardSize, score, bestScore, gameOver, gameWin, moveHandle, moveUp, isChanged };
+// 重置游戏
+const reset = () => {
+  score.value = 0;
+  gameOver.value = false;
+  gameWin.value = false;
+  history.value = [];
+  board.value = generateBoard(boardSize.value);
+  addTileToBoard(board.value, generateTile());
+  addTileToBoard(board.value, generateTile());
+};
+
+const onSetBoardSize = (size: number) => {
+  boardSize.value = size;
+  reset();
+};
+
+export { board, boardSize, score, bestScore, gameOver, gameWin, moveHandle, moveUp, isChanged, reset, onSetBoardSize };

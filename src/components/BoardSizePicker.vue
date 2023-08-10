@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { onSetBoardSize } from "@/hooks/Game";
+import { onSetBoardSize } from "@/hooks/logic";
 
 defineOptions({
   name: "BoardSizePicker",

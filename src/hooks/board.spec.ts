@@ -1,5 +1,5 @@
 import { it, expect, describe } from "vitest";
-import { addTile, generateBoard, generateTile } from "./board";
+import { addTileToBoard, generateBoard, generateTile } from "./board";
 
 describe("board", () => {
   it("should generate tile with random value", () => {
@@ -10,7 +10,7 @@ describe("board", () => {
   });
 
   it("should generate tile", () => {
-    expect(generateTile(2)).toEqual({ value: 2, merged: false });
+    expect(generateTile(2)).toContain({ value: 2, merged: false });
   });
 
   it("should generate board", () => {
@@ -33,7 +33,7 @@ describe("board", () => {
     const board = generateBoard(4);
     const tile = generateTile(2);
 
-    addTile(board, tile);
+    addTileToBoard(board, tile);
 
     expect(board.some(row => row.some(tile => tile.value === 2))).toBe(true);
   });
